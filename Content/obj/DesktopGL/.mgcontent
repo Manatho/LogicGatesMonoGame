@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>F:/Projects/LogicGateFront/Content/Fonts/DefaultFont.spritefont</File>
+    <File>F:/Projects/LogicGateFront/Content/Fonts/Small.spritefont</File>
+    <File>F:/Projects/LogicGateFront/Content/Gates/AND.png</File>
+    <File>F:/Projects/LogicGateFront/Content/Gates/LED.png</File>
+    <File>F:/Projects/LogicGateFront/Content/Gates/OR.png</File>
+    <File>F:/Projects/LogicGateFront/Content/Gates/XOR.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

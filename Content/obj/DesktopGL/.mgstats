@@ -1,0 +1,7 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"F:/Projects/LogicGateFront/Content/Fonts/DefaultFont.spritefont","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Fonts/DefaultFont.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0,3221147
+"F:/Projects/LogicGateFront/Content/Fonts/Small.spritefont","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Fonts/Small.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0,035912
+"F:/Projects/LogicGateFront/Content/Gates/AND.png","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Gates/AND.xnb","TextureProcessor","Texture2DContent",2432,160085,0,021943
+"F:/Projects/LogicGateFront/Content/Gates/LED.png","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Gates/LED.xnb","TextureProcessor","Texture2DContent",4280,160085,0,0129691
+"F:/Projects/LogicGateFront/Content/Gates/OR.png","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Gates/OR.xnb","TextureProcessor","Texture2DContent",2829,160085,0,0119674
+"F:/Projects/LogicGateFront/Content/Gates/XOR.png","F:/Projects/LogicGateFront/Content/bin/DesktopGL/Gates/XOR.xnb","TextureProcessor","Texture2DContent",1431,160085,0,0109707
