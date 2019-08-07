@@ -3,51 +3,63 @@ using GameEngine.UI.Control;
 using GameEngine.UI.Control.Event;
 using GameEngine.UI.Control.Texture;
 using LogicGateFront;
+using LogicGates;
 using LogicGates.DefaultGates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace LogicGateFront
 {
-    internal class ComponentMenu
+    internal class ComponentMenu : InputContainer
     {
-        private static List<Type> gateTypes = new List<Type>() { typeof(AndGate), typeof(OrGate), typeof(NotGate), typeof(XorGate) };
+        private static List<Type> gateTypes = new List<Type>() { typeof(AndGate), typeof(OrGate), typeof(NotGate), typeof(XorGate), typeof(Switch) };
+        private static Dictionary<string, Type> nameToType = init();
 
-        private static readonly int X = 700;
-        private static readonly int Width = 100;
-        private static readonly int Height = 600;
-        private static readonly int Y = 0;
-
-        private static readonly int Padding = 5;
-
-        private static TemporaryState state;
-
-        public static InputContainer Create(GameMenu gameMenu)
+        private static Dictionary<string, Type> init()
         {
-            state = new TemporaryState();
-
-            InputContainer componentMenu = new InputContainer();
-            componentMenu.Add(new TextureField(new Rectangle(X - 3, Y, 3, Height), new Color(50, 50, 50)));
-            componentMenu.Add(new TextureField(new Rectangle(X, Y, Width, Height), new Color(220, 220, 220)));
-
-            CreateGateButtons(componentMenu, gameMenu);
-            state.CurrentY += Padding;
-            componentMenu.Add(new TextureField(new Rectangle(X, state.CurrentY, Width, 2), new Color(50, 50, 50)));
-            state.CurrentY += Padding;
-            CreateGateSettings(componentMenu);
-
-
-            return componentMenu;
+            var temp = new Dictionary<string, Type>();
+            foreach (Type type in gateTypes)
+                temp.Add(type.FullName, type);
+            return temp;
         }
 
-        private static readonly int BPadding = 5;
-        private static readonly int ButtonPrRow = 3;
-        private static void CreateGateButtons(InputContainer componentMenu, GameMenu gameMenu)
+        public bool Selected { get { return group.SelectedIndex != -1; } set { if (value) Disable(); }  }
+        public Rectangle Bounds => new Rectangle(X, Y, Width, Height);
+
+        private readonly int X = 700;
+        private readonly int Width = 100;
+        private readonly int Height = 600;
+        private readonly int Y = 0;
+
+        private readonly int Padding = 5;
+
+
+        private int CurrentY;
+        Dictionary<string, InputContainer> Containers = new Dictionary<string, InputContainer>();
+        Dictionary<InputContainer, List<Iinput>> Inputs = new Dictionary<InputContainer, List<Iinput>>();
+        ToggleButtons group = new ToggleButtons();
+
+        public ComponentMenu (GameMenu gameMenu)
         {
-            ToggleButtons group = new ToggleButtons();
+            Add(new TextureField(new Rectangle(X - 3, Y, 3, Height), new Color(50, 50, 50)));
+            Add(new TextureField(new Rectangle(X, Y, Width, Height), new Color(220, 220, 220)));
+
+            CreateGateButtons(this, gameMenu);
+            CurrentY += Padding;
+            Add(new TextureField(new Rectangle(X, CurrentY, Width, 2), new Color(50, 50, 50)));
+            CurrentY += Padding;
+            CreateGateSettings(this);
+        }
+
+        private readonly int BPadding = 5;
+        private readonly int ButtonPrRow = 3;
+        private void CreateGateButtons(InputContainer componentMenu, GameMenu gameMenu)
+        {
+            
             List<TextureField> icons = new List<TextureField>();
 
             ButtonTexture bt = new ButtonTexture(
@@ -71,7 +83,13 @@ namespace LogicGateFront
                 Rectangle iconBounds = bounds;
                 iconBounds.Inflate(-4, -4);
 
-                TextureField icon = new TextureField(iconBounds, gameMenu.GateTextureMap[gateType.Name.Replace("Gate", "")], Color.White);
+                Texture2D texture;
+                if (gameMenu.GateTextureMap.ContainsKey(gateType.FullName))
+                    texture = gameMenu.GateTextureMap[gateType.FullName];
+                else
+                    texture = InputController.DefaultTexture;
+
+                TextureField icon = new TextureField(iconBounds, texture , Color.White);
                 Button temp = new Button(bounds, bt, new Text("", Color.White));
                 temp.ID = gateType.FullName;
 
@@ -85,25 +103,31 @@ namespace LogicGateFront
             {
                 if(group.SelectedButton != null)
                 {
-                    state.Containers[group.SelectedButton.ID].Active = false;
-                    state.Containers[group.SelectedButton.ID].DeFocus();
+                    Containers[group.SelectedButton.ID].Active = false;
+                    Containers[group.SelectedButton.ID].DeFocus();
+                }
+
+                if (!Selected)
+                {
+                    OnActive?.Invoke();
                 }
             };
 
             group.AfterSelectedButtonChange += (object sender, ButtonEventArgs e) =>
             {
-                state.Containers[e.Button.ID].Active = true;
-                state.Containers[e.Button.ID].Focus();
+
+                Containers[e.Button.ID].Active = true;
+                Containers[e.Button.ID].Focus();
             };
 
             componentMenu.Add(group);
             componentMenu.Add(icons);
-            state.CurrentY = offsetY + buttonSize + BPadding;
+            CurrentY = offsetY + buttonSize + BPadding;
         }
 
 
 
-        private static void CreateGateSettings(InputContainer componentMenu)
+        private void CreateGateSettings(InputContainer componentMenu)
         {
             foreach (Type t in gateTypes)
             {
@@ -113,37 +137,107 @@ namespace LogicGateFront
                         paras = cs.GetParameters();
 
                 InputContainer temp = new InputContainer();
-                int oldY = state.CurrentY;
+                List<Iinput> inputs = new List<Iinput>();
+                int oldY = CurrentY;
                 foreach (var para in paras)
                 {
                     if (typeof(int).IsAssignableFrom(para.ParameterType))
                     {
-                        Point start = new Point(X + Padding, state.CurrentY);
+                        Point start = new Point(X + Padding, CurrentY);
                         temp.Add(new Label(new Text(para.Name, Color.Black), start));
 
                         int textLength = (int)InputController.DefaultFont.MeasureString(para.Name).X;
                         int textHeight = (int)InputController.DefaultFont.MeasureString(para.Name).Y;
                         int x = start.X + Padding + textLength;
                         int width = X + Width - x - Padding;
-                        temp.Add(new NumberSelector(new Rectangle(x, start.Y, width, textHeight), 1, 99, textHeight, 10));
+                        var input = new NumberSelector(new Rectangle(x, start.Y, width, textHeight), 1, 99, textHeight, 10);
+                        temp.Add(input);
+                        inputs.Add(input);
 
-                        state.CurrentY += textHeight + Padding;
+                        CurrentY += textHeight + Padding;
 
                         temp.Active = false;
                         temp.DeFocus();
                     }
                 }
-                state.CurrentY = oldY;
-                state.Containers[t.FullName] = temp;
+                CurrentY = oldY;
+                Containers[t.FullName] = temp;
+                Inputs.Add(temp, inputs);
             }
-            componentMenu.Add(state.Containers.Values);
+            componentMenu.Add(Containers.Values);
         }
 
-        private class TemporaryState
+        public IGate NewGate()
         {
-            public int CurrentY = 0;
-            public Dictionary<string, InputContainer> Containers = new Dictionary<string, InputContainer>();
+            IGate g = null;
+
+            if (!Selected)
+                return g;
+
+            Type t = nameToType[group.SelectedButton.ID];
+            List<Iinput> inputs = Inputs[Containers[group.SelectedButton.ID]];
+
+            int length = 0;
+            ConstructorInfo ctor = null;
+            foreach (var cs in t.GetConstructors())
+                if (length <= cs.GetParameters().Length)
+                {
+                    length = cs.GetParameters().Length;
+                    ctor = cs;
+                }
+
+            object[] param = new object[inputs.Count];
+
+            for (int i = 0; i < inputs.Count; i++)
+                param[i] = GetInputValue(inputs[i]);
+
+            g = ctor.Invoke(param) as IGate;
+
+            return g;
         }
+
+        private object GetInputValue(Iinput iinput)
+        {
+            if(iinput is NumberSelector)
+            {
+                return (iinput as NumberSelector).Value;
+            }
+            return null;
+        }
+
+        public override void Focus()
+        {
+            base.Focus();
+
+            InputController.KeyboardManager.KeyUp += KeyboardManager_KeyUp;
+        }
+
+        public override void DeFocus()
+        {
+            base.DeFocus();
+            InputController.KeyboardManager.KeyUp -= KeyboardManager_KeyUp;
+        }
+
+        private void KeyboardManager_KeyUp(object sender, KeyboardEventArgs e)
+        {
+            if(e.Key == Keys.Escape && group.SelectedButton != null)
+            {
+                Disable();
+            }
+        }
+
+
+        private void Disable()
+        {
+            Containers[group.SelectedButton.ID].Active = false;
+            Containers[group.SelectedButton.ID].DeFocus();
+            group.UnlockSelected();
+            OnDisable?.Invoke();
+        }
+
+        public event Action OnDisable;
+        public event Action OnActive;
+
     }
 
 

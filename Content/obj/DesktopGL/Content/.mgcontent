@@ -4,12 +4,12 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>F:/Projects/LogicGateFront/Content/Fonts/DefaultFont.spritefont</File>
-    <File>F:/Projects/LogicGateFront/Content/Fonts/Small.spritefont</File>
-    <File>F:/Projects/LogicGateFront/Content/Gates/AND.png</File>
-    <File>F:/Projects/LogicGateFront/Content/Gates/LED.png</File>
-    <File>F:/Projects/LogicGateFront/Content/Gates/OR.png</File>
-    <File>F:/Projects/LogicGateFront/Content/Gates/XOR.png</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Fonts/DefaultFont.spritefont</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Fonts/Small.spritefont</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Gates/AND.png</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Gates/LED.png</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Gates/OR.png</File>
+    <File>D:/Projects/LogicGatesMonoGame/Content/Gates/XOR.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

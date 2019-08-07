@@ -61,6 +61,7 @@
     <Compile Include="LogicGates\Connection.cs" />
     <Compile Include="LogicGates\DefaultGates\AbstractGate.cs" />
     <Compile Include="LogicGates\DefaultGates\AndGate.cs" />
+    <Compile Include="LogicGates\DefaultGates\Class1.cs" />
     <Compile Include="LogicGates\DefaultGates\NotGate.cs" />
     <Compile Include="LogicGates\DefaultGates\OrGate.cs" />
     <Compile Include="LogicGates\DefaultGates\XorGate.cs" />

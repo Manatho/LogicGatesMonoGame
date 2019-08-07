@@ -54,7 +54,7 @@ namespace LogicGateFront
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.F4))
                 Exit();
 
             InputController.Update(gameTime);
@@ -70,9 +70,10 @@ namespace LogicGateFront
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            this.GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.AnisotropicClamp);
+            spriteBatch.Begin(SpriteSortMode.Immediate);
             menus.Draw(spriteBatch);
+            
+
             spriteBatch.End();
 
 

@@ -35,6 +35,10 @@ namespace LogicGateFront
             gameMenu.Gates.ForEach(g => g.OnLeftClickDown = SelectGate);
         }
 
+        public void AddClick(GateObject gate)
+        {
+            gate.OnLeftClickDown = SelectGate;
+        }
 
         private void MouseManager_LeftButtonUp(object sender, MouseEventArgs e)
         {

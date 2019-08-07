@@ -53,6 +53,7 @@ namespace LogicGateFront.GameCore
         public GateObject(IGate gate, Texture2D gateTexture, Point position)
         {
             this.gate = gate;
+            SelectedPin = new SelectedPin();
 
             int width = Math.Max(gate.Inputs.Length, gate.Outputs.Length);
             _area = new Rectangle(position, new Point(size + padding * 2, size * width + padding * 2));
@@ -262,7 +263,7 @@ namespace LogicGateFront.GameCore
             Rectangle desp = new Rectangle(test, gateTexture.Bounds.Size);
 
             if (Outputs[0])
-                spriteBatch.Draw(gateTexture, _area, null, Color.LightGreen, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(gateTexture, desp, null, Color.LightGreen, rotation, gateTexture.Bounds.Size.ToVector2() / 2, SpriteEffects.None, 0);
             else
                 spriteBatch.Draw(gateTexture, desp, null, Color.White, rotation, gateTexture.Bounds.Size.ToVector2()/2, SpriteEffects.None, 0);
         

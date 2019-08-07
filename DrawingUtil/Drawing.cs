@@ -22,7 +22,8 @@ namespace GameEngine.DrawingUtil
 			{
 				using (SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice))
 				{
-					RenderTarget2D renderTarget = new RenderTarget2D(GraphicsDevice, Width, Height, false, SurfaceFormat.Rgba64, DepthFormat.None, 16, RenderTargetUsage.DiscardContents);
+                //SurfaceFormat.Rgba64
+                RenderTarget2D renderTarget = new RenderTarget2D(GraphicsDevice, Width, Height, false, SurfaceFormat.Rgba64, DepthFormat.None, 8, RenderTargetUsage.DiscardContents);
 					GraphicsDevice.SetRenderTarget(renderTarget);
 					GraphicsDevice.Clear(Color.Transparent);
 

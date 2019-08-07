@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>F:/Projects/LogicGateFront/Content/Gates/LED.png</SourceFile>
-  <SourceTime>2019-07-31T16:38:18.8596279+02:00</SourceTime>
-  <DestFile>F:/Projects/LogicGateFront/Content/bin/DesktopGL/Gates/LED.xnb</DestFile>
-  <DestTime>2019-07-31T21:54:28.2852654+02:00</DestTime>
+  <SourceFile>D:/Projects/LogicGatesMonoGame/Content/Gates/LED.png</SourceFile>
+  <SourceTime>2019-08-07T08:11:31.726697+02:00</SourceTime>
+  <DestFile>D:/Projects/LogicGatesMonoGame/Content/bin/DesktopGL/Gates/LED.xnb</DestFile>
+  <DestTime>2019-08-07T08:17:55.8733379+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
